@@ -1,12 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { 
-  Search, 
-  Cpu, 
-  ShieldCheck, 
-  FileSpreadsheet, 
-  Star, 
+import {
+  Search,
+  Cpu,
+  ShieldCheck,
+  FileSpreadsheet,
+  Star,
   Zap,
   Building,
   CheckCircle,
@@ -30,7 +30,7 @@ export const Landing = () => {
 
   return (
     <div className="min-h-[calc(100vh-62px)] flex flex-col items-center select-none bg-slate-50 dark:bg-slate-950 transition-colors">
-      
+
       {/* 1. Hero Showcase Section */}
       <section className="relative w-full max-w-7xl mx-auto px-6 pt-16 pb-20 text-center flex flex-col items-center">
         {/* Background futuristic decorative glows */}
@@ -82,7 +82,7 @@ export const Landing = () => {
         <h2 className="text-center text-2xl sm:text-3xl font-extrabold text-slate-800 dark:text-white mb-16">
           Core Features & Capabilities
         </h2>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {/* Feature 1 */}
           <div className="p-6 rounded-2xl glass-panel bg-white/50 dark:bg-slate-900/30 text-left border border-slate-200/50 dark:border-slate-800/30">
@@ -166,7 +166,7 @@ export const Landing = () => {
 
       {/* Footer copyright */}
       <footer className="w-full border-t border-slate-100 dark:border-slate-950/40 py-8 text-center text-xs text-slate-400 font-medium bg-white/20 dark:bg-slate-950/20">
-        © {new Date().getFullYear()} Smart Phonebook Search Engine. <br />Developed By MCA Students At Chetan Bussiness School, Hubli.
+        © {new Date().getFullYear()} Smart Phonebook Search Engine. <br />Developed By MCA Students( Twinkle Taleda & Abhishek J ) At Chetan Bussiness School, Hubli.
       </footer>
     </div>
   );

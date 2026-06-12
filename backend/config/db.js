@@ -85,6 +85,9 @@ const runMigrations = async (client) => {
     
     const schemaSql = fs.readFileSync(schemaPath, 'utf8');
     
+    // Explicitly set search path to ensure tables are created in the public schema
+    await client.query('SET search_path TO public;');
+
     // Execute all queries as a unified block
     await client.query(schemaSql);
     console.log('Database tables, extensions, and indexes verified & compiled successfully!');

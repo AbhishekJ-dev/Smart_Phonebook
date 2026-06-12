@@ -25,7 +25,11 @@ app.use(
 
 // 2. Cross-Origin Resource Sharing
 const corsOptions = {
-  origin: process.env.CLIENT_URL || '*',
+  origin: [
+    'http://localhost:5173',
+    'https://smart-phonebook-r5c5.vercel.app',
+    process.env.CLIENT_URL
+  ].filter(Boolean),
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true

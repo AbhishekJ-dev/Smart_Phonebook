@@ -14,10 +14,16 @@ const { Pool } = pg;
 // Establish database configuration reading standard PostgreSQL env variables or DATABASE_URL
 const isProduction = process.env.NODE_ENV === 'production';
 
+if (process.env.DATABASE_URL) {
+  console.log('DB_CONFIG: Using connection string (DATABASE_URL)');
+} else {
+  console.warn('DB_CONFIG: No DATABASE_URL found. Falling back to individual environment variables (Host: ' + (process.env.DB_HOST || 'localhost') + ')');
+}
+
 const poolConfig = process.env.DATABASE_URL
   ? {
       connectionString: process.env.DATABASE_URL,
-      ssl: isProduction ? { rejectUnauthorized: false } : false
+      ssl: { rejectUnauthorized: false } // Force SSL for managed databases like Render
     }
   : {
       user: process.env.DB_USER || 'postgres',

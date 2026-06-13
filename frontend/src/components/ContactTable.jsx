@@ -5,7 +5,13 @@ import toast from 'react-hot-toast';
 import api from '../services/api.js';
 
 export const ContactTable = ({ contacts, onEdit, onDelete, onView }) => {
-  const serverUrl = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5001';
+  const apiBase = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5001';
+  
+  const getProfilePicUrl = (path) => {
+    if (!path) return null;
+    const cleanPath = path.replace(/^https?:\/\/localhost:\d+\//, '');
+    return `${apiBase}/${cleanPath}`;
+  };
 
   const handleToggleFavorite = async (contact, e) => {
     e.stopPropagation();
@@ -85,7 +91,7 @@ export const ContactTable = ({ contacts, onEdit, onDelete, onView }) => {
                   
                   {contact.profile_picture ? (
                     <img
-                      src={`${serverUrl}/${contact.profile_picture}`}
+                      src={getProfilePicUrl(contact.profile_picture)}
                       alt={contact.name}
                       className="w-10 h-10 rounded-full object-cover border border-slate-200 dark:border-slate-800"
                     />

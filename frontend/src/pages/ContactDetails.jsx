@@ -18,7 +18,13 @@ import api from '../services/api.js';
 
 export const ContactDetails = ({ isOpen, onClose, contact, onEdit, onDelete }) => {
   if (!contact) return null;
-  const serverUrl = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5001';
+  const apiBase = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5001';
+
+  const getProfilePicUrl = (path) => {
+    if (!path) return null;
+    const cleanPath = path.replace(/^https?:\/\/localhost:\d+\//, '');
+    return `${apiBase}/${cleanPath}`;
+  };
 
   const handleToggleFavorite = async () => {
     try {
@@ -104,11 +110,11 @@ export const ContactDetails = ({ isOpen, onClose, contact, onEdit, onDelete }) =
             {/* Visual Header */}
             <div className="flex flex-col items-center mt-6 text-center">
               {contact.profile_picture ? (
-                <img
-                  src={`${serverUrl}/${contact.profile_picture}`}
-                  alt={contact.name}
-                  className="w-24 h-24 rounded-full object-cover border-2 border-cyan-500 shadow-md"
-                />
+                  <img
+                    src={getProfilePicUrl(contact.profile_picture)}
+                    alt={contact.name}
+                    className="w-24 h-24 rounded-full object-cover border-2 border-cyan-500 shadow-md"
+                  />
               ) : (
                 <div className={`w-24 h-24 rounded-full bg-gradient-to-tr ${getGradient(contact.name)} flex items-center justify-center font-bold text-3xl shadow-md`}>
                   {contact.name.charAt(0).toUpperCase()}

@@ -24,7 +24,14 @@ export const ContactModal = ({ isOpen, onClose, contactToEdit = null }) => {
   
   const fileInputRef = useRef(null);
 
-  const serverUrl = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5001';
+  const apiBase = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5001';
+
+  const getProfilePicUrl = (path) => {
+    if (!path) return null;
+    const cleanPath = path.replace(/^https?:\/\/localhost:\d+\//, '');
+    return `${apiBase}/${cleanPath}`;
+  };
+
 
   // Hydrate fields if editing an existing contact
   useEffect(() => {
@@ -39,7 +46,7 @@ export const ContactModal = ({ isOpen, onClose, contactToEdit = null }) => {
         setTags(contactToEdit.tags || []);
         
         if (contactToEdit.profile_picture) {
-          setImagePreview(`${serverUrl}/${contactToEdit.profile_picture}`);
+          setImagePreview(getProfilePicUrl(contactToEdit.profile_picture));
         } else {
           setImagePreview(null);
         }

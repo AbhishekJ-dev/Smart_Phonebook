@@ -5,7 +5,14 @@ import toast from 'react-hot-toast';
 import api from '../services/api.js';
 
 export const ContactCard = ({ contact, onEdit, onDelete, onView }) => {
-  const serverUrl = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5001';
+  const apiBase = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5001';
+  
+  // Clean up legacy URLs that might be stored in the DB
+  const getProfilePicUrl = (path) => {
+    if (!path) return null;
+    const cleanPath = path.replace(/^https?:\/\/localhost:\d+\//, '');
+    return `${apiBase}/${cleanPath}`;
+  };
 
   // Toggle favorite state — must send ALL required fields or validator returns 400
   const handleToggleFavorite = async (e) => {
@@ -79,7 +86,7 @@ export const ContactCard = ({ contact, onEdit, onDelete, onView }) => {
       <div className="flex flex-col items-center mt-2 w-full text-center">
         {contact.profile_picture ? (
           <img
-            src={`${serverUrl}/${contact.profile_picture}`}
+            src={getProfilePicUrl(contact.profile_picture)}
             alt={contact.name}
             className="w-20 h-20 rounded-full object-cover border-2 border-slate-200 dark:border-slate-800 shadow-md group-hover:border-cyan-500 dark:group-hover:border-cyan-400/50 transition-all duration-300"
           />

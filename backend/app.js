@@ -25,21 +25,11 @@ app.use(
 
 // 2. Cross-Origin Resource Sharing
 const corsOptions = {
-  origin: (origin, callback) => {
-    const allowedOrigins = [
-      'http://localhost:5173',
-      'https://smart-phonebook-r5c5.vercel.app'
-    ];
-    // Allow if no origin (like mobile apps/curl) or if it matches our list or .vercel.app
-    if (!origin || allowedOrigins.includes(origin) || origin.endsWith('.vercel.app')) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
+  origin: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true
+  credentials: true,
+  optionsSuccessStatus: 200
 };
 app.use(cors(corsOptions));
 

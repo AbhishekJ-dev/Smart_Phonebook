@@ -10,22 +10,11 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 /**
- * Helper to safely delete local avatar file from disk
+ * Helper to safely delete avatar file (currently Cloudinary handles storage)
  */
-const deleteDiskFile = async (relativeOrAbsolutePath) => {
-  if (!relativeOrAbsolutePath) return;
-  try {
-    let absolutePath = relativeOrAbsolutePath;
-    if (!path.isAbsolute(relativeOrAbsolutePath)) {
-      absolutePath = path.join(__dirname, '..', relativeOrAbsolutePath);
-    }
-    if (fs.existsSync(absolutePath)) {
-      await fs.promises.unlink(absolutePath);
-      logger.info(`Garbage collected unused contact image: ${absolutePath}`);
-    }
-  } catch (err) {
-    logger.error('Failed to delete file from disk storage:', err);
-  }
+const deleteDiskFile = async (pathOrUrl) => {
+  // If we wanted to delete from Cloudinary, we'd use cloudinary.uploader.destroy()
+  // For now, we skip local unlink as we are using Cloud storage
 };
 
 /**
@@ -105,8 +94,8 @@ export const createContact = async (req, res, next) => {
   const userId = req.user.id;
   const { name, phone, email, company, address, tags, favorite } = req.body;
   
-  // Profile picture URL path (relative)
-  const profilePicture = req.file ? `uploads/${req.file.filename}` : null;
+  // Profile picture URL path (Cloudinary URL)
+  const profilePicture = req.file ? req.file.path : null;
   const tagsArray = Array.isArray(tags) ? tags : typeof tags === 'string' ? JSON.parse(tags) : [];
   const isFavorite = favorite === 'true' || favorite === true;
 
@@ -196,11 +185,7 @@ export const updateContact = async (req, res, next) => {
     // Determine picture update or reuse
     let profilePicture = currentContact.profile_picture;
     if (req.file) {
-      // Unlink previous file if updating
-      if (currentContact.profile_picture) {
-        await deleteDiskFile(currentContact.profile_picture);
-      }
-      profilePicture = `uploads/${req.file.filename}`;
+      profilePicture = req.file.path;
     }
 
     const tagsArray = Array.isArray(tags) 

@@ -22,6 +22,7 @@ export const ContactDetails = ({ isOpen, onClose, contact, onEdit, onDelete }) =
 
   const getProfilePicUrl = (path) => {
     if (!path) return null;
+    if (path.startsWith('http')) return path;
     const cleanPath = path.replace(/^https?:\/\/localhost:\d+\//, '');
     return `${apiBase}/${cleanPath}`;
   };

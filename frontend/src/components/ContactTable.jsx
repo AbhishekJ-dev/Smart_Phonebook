@@ -9,6 +9,7 @@ export const ContactTable = ({ contacts, onEdit, onDelete, onView }) => {
   
   const getProfilePicUrl = (path) => {
     if (!path) return null;
+    if (path.startsWith('http')) return path;
     const cleanPath = path.replace(/^https?:\/\/localhost:\d+\//, '');
     return `${apiBase}/${cleanPath}`;
   };

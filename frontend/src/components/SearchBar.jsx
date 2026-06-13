@@ -146,7 +146,7 @@ export const SearchBar = ({ onSelectContact }) => {
                       {/* Avatar check */}
                       {contact.profile_picture ? (
                         <img
-                          src={`http://localhost:5000/${contact.profile_picture}`}
+                          src={(import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5001') + `/${contact.profile_picture}`}
                           alt={contact.name}
                           className="w-8 h-8 rounded-full object-cover border border-slate-200 dark:border-slate-700/50"
                         />

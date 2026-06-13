@@ -24,7 +24,7 @@ export const ContactModal = ({ isOpen, onClose, contactToEdit = null }) => {
   
   const fileInputRef = useRef(null);
 
-  const serverUrl = 'http://localhost:5000';
+  const serverUrl = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5001';
 
   // Hydrate fields if editing an existing contact
   useEffect(() => {

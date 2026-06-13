@@ -18,7 +18,7 @@ import api from '../services/api.js';
 
 export const ContactDetails = ({ isOpen, onClose, contact, onEdit, onDelete }) => {
   if (!contact) return null;
-  const serverUrl = 'http://localhost:5000';
+  const serverUrl = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5001';
 
   const handleToggleFavorite = async () => {
     try {

@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 import api from '../services/api.js';
 
 export const ContactTable = ({ contacts, onEdit, onDelete, onView }) => {
-  const serverUrl = 'http://localhost:5000';
+  const serverUrl = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5001';
 
   const handleToggleFavorite = async (contact, e) => {
     e.stopPropagation();

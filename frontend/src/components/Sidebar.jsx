@@ -145,7 +145,7 @@ export const Sidebar = ({ isOpen, onClose }) => {
   return (
     <>
       {/* 1. Desktop Mode Sidebar (always visible on lg viewport) */}
-      <aside className="hidden lg:block w-64 h-[calc(100vh-62px)] flex-shrink-0 sticky top-0 overflow-y-auto border-r border-slate-200/50 dark:border-slate-800/40">
+      <aside className="hidden lg:block fixed left-0 top-[62px] w-64 h-[calc(100vh-62px)] z-30 overflow-y-auto border-r border-slate-200/50 dark:border-slate-800/40">
         <SidebarContent />
       </aside>
 

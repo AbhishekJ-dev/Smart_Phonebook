@@ -64,7 +64,7 @@ const AppShell = ({ children }) => {
         {isAuthenticated && (
           <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
         )}
-        <main className="flex-1 overflow-y-auto">
+        <main className={`flex-1 overflow-y-auto ${isAuthenticated ? 'lg:ml-64' : ''}`}>
           {children}
         </main>
       </div>

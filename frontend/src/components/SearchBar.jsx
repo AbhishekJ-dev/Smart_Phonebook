@@ -13,6 +13,15 @@ export const SearchBar = ({ onSelectContact }) => {
     searchSource 
   } = useContacts();
 
+  const apiBase = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5001';
+
+  const getProfilePicUrl = (path) => {
+    if (!path) return null;
+    if (path.startsWith('http')) return path; 
+    const cleanPath = path.replace(/^https?:\/\/localhost:\d+\//, '');
+    return `${apiBase}/${cleanPath}`;
+  };
+
   const [inputVal, setInputVal] = useState(searchQuery);
   const [suggestions, setSuggestions] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -146,7 +155,7 @@ export const SearchBar = ({ onSelectContact }) => {
                       {/* Avatar check */}
                       {contact.profile_picture ? (
                         <img
-                          src={(import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5001') + `/${contact.profile_picture.replace(/^https?:\/\/localhost:\d+\//, '')}`}
+                          src={getProfilePicUrl(contact.profile_picture)}
                           alt={contact.name}
                           className="w-8 h-8 rounded-full object-cover border border-slate-200 dark:border-slate-700/50"
                         />

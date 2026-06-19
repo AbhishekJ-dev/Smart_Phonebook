@@ -42,8 +42,8 @@ export const Navbar = ({ onMenuClick }) => {
             alt="SmartPhonebook Logo" 
             className="w-8 h-8 object-contain rounded-lg shadow-sm" 
           />
-          <span className="text-base md:text-lg font-extrabold tracking-wide text-slate-800 dark:text-white flex items-center">
-            Smart<span className="hidden sm:inline animated-gradient-text font-black">Phonebook</span>
+          <span className="text-base md:text-lg font-black tracking-wide text-slate-800 dark:text-white flex items-center">
+            SmartPhonebook
           </span>
         </Link>
       </div>
@@ -60,10 +60,18 @@ export const Navbar = ({ onMenuClick }) => {
               onClick={() => setDropdownOpen(!dropdownOpen)}
               className="flex items-center gap-2 px-2 py-1.5 rounded-xl border border-slate-200/50 dark:border-slate-800/40 hover:bg-slate-50 dark:hover:bg-slate-900/60 transition-colors focus:outline-none cursor-pointer"
             >
-              {/* Initials representation */}
-              <div className="w-7.5 h-7.5 rounded-lg bg-gradient-to-tr from-cyan-400 to-blue-500 text-white font-bold text-xs flex items-center justify-center shadow-sm">
-                {user.name.charAt(0).toUpperCase()}
-              </div>
+              {/* Profile Image or Initials representation */}
+              {user.profile_picture ? (
+                <img 
+                  src={user.profile_picture.startsWith('http') ? user.profile_picture : `${import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5001'}/${user.profile_picture}`} 
+                  alt={user.name} 
+                  className="w-7.5 h-7.5 rounded-lg object-cover shadow-sm border border-slate-200/50"
+                />
+              ) : (
+                <div className="w-7.5 h-7.5 rounded-lg bg-gradient-to-tr from-cyan-400 to-blue-500 text-white font-bold text-xs flex items-center justify-center shadow-sm">
+                  {user.name.charAt(0).toUpperCase()}
+                </div>
+              )}
               <span className="hidden md:block text-xs font-bold text-slate-700 dark:text-slate-200">
                 {user.name.split(' ')[0]}
               </span>

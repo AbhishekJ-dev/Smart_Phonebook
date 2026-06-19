@@ -22,7 +22,13 @@ export const Register = () => {
     
     if (!name.trim()) return toast.error('Full name is required.');
     if (!email.trim()) return toast.error('Email address is required.');
-    if (password.length < 6) return toast.error('Password must be at least 6 characters long.');
+    if (password.length < 8) return toast.error('Password must be at least 8 characters long.');
+    
+    const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if (!strongPasswordRegex.test(password)) {
+      return toast.error('Password must contain uppercase, lowercase, a number, and a special character.');
+    }
+
     if (password !== confirmPassword) return toast.error('Passwords do not match.');
 
     setLoading(true);
@@ -112,7 +118,7 @@ export const Register = () => {
           {/* Password */}
           <div>
             <label htmlFor="password-register" className="block text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1">
-              Password
+              Password <span className="lowercase font-normal opacity-70">(8+ chars, uppercase, #, @$)</span>
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-3 flex items-center text-slate-400 pointer-events-none">

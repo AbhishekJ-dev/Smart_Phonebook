@@ -93,7 +93,7 @@ export const login = async (req, res, next) => {
 
     // Hydrate User's Trie Cache upon login to ensure immediate smart prefix suggestions
     const contactsResult = await pool.query(
-      'SELECT id, name, phone, email, company, address, tags, favorite FROM contacts WHERE user_id = $1',
+      'SELECT id, name, phone, email, company, address, tags, favorite, profile_picture FROM contacts WHERE user_id = $1',
       [user.id]
     );
     TrieService.hydrateUserTrie(user.id, contactsResult.rows);
@@ -108,6 +108,7 @@ export const login = async (req, res, next) => {
         id: user.id,
         name: user.name,
         email: user.email,
+        profile_picture: user.profile_picture,
         createdAt: user.created_at
       }
     });
@@ -122,7 +123,7 @@ export const login = async (req, res, next) => {
 export const getMe = async (req, res, next) => {
   try {
     const userResult = await pool.query(
-      'SELECT id, name, email, created_at FROM users WHERE id = $1',
+      'SELECT id, name, email, profile_picture, created_at FROM users WHERE id = $1',
       [req.user.id]
     );
 
@@ -139,7 +140,7 @@ export const getMe = async (req, res, next) => {
     const userTrie = TrieService.getUserTrie(user.id);
     if (userTrie.root.contacts.size === 0) {
       const contactsResult = await pool.query(
-        'SELECT id, name, phone, email, company, address, tags, favorite FROM contacts WHERE user_id = $1',
+        'SELECT id, name, phone, email, company, address, tags, favorite, profile_picture FROM contacts WHERE user_id = $1',
         [user.id]
       );
       TrieService.hydrateUserTrie(user.id, contactsResult.rows);
@@ -151,6 +152,7 @@ export const getMe = async (req, res, next) => {
         id: user.id,
         name: user.name,
         email: user.email,
+        profile_picture: user.profile_picture,
         createdAt: user.created_at
       }
     });

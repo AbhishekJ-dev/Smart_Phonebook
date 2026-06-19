@@ -19,7 +19,7 @@ const primeSearchTrieCaches = async () => {
     
     // Fetch all contacts from PostgreSQL
     const contactsRes = await pool.query(
-      'SELECT id, user_id, name, phone, email, company, address, tags, favorite FROM contacts'
+      'SELECT id, user_id, name, phone, email, company, address, tags, favorite, profile_picture FROM contacts'
     );
     
     const allContacts = contactsRes.rows;

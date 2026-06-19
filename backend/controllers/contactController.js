@@ -451,7 +451,7 @@ export const importContacts = async (req, res, next) => {
 
     // Mass hydration: Re-fetch all contacts and fully rebuild user Trie index in-memory
     const allContacts = await pool.query(
-      'SELECT id, name, phone, email, company, address, tags, favorite FROM contacts WHERE user_id = $1',
+      'SELECT id, name, phone, email, company, address, tags, favorite, profile_picture FROM contacts WHERE user_id = $1',
       [userId]
     );
     TrieService.hydrateUserTrie(userId, allContacts.rows);

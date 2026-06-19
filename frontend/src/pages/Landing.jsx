@@ -32,49 +32,56 @@ export const Landing = () => {
     <div className="min-h-[calc(100vh-62px)] flex flex-col items-center select-none bg-slate-50 dark:bg-slate-950 transition-colors">
 
       {/* 1. Hero Showcase Section */}
-      <section className="relative w-full max-w-7xl mx-auto px-6 pt-16 pb-20 text-center flex flex-col items-center">
-        {/* Background futuristic decorative glows */}
-        <div className="absolute top-12 left-1/2 -translate-x-1/2 w-[350px] h-[350px] md:w-[600px] md:h-[600px] bg-gradient-to-tr from-cyan-500/10 to-indigo-500/10 dark:from-cyan-500/5 dark:to-indigo-500/5 rounded-full blur-[80px] -z-10 pointer-events-none"></div>
+      <section className="relative w-full min-h-[85vh] flex items-center justify-center overflow-hidden">
+        {/* Main Hero Background Image */}
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop" 
+            alt="Digital Connection" 
+            className="w-full h-full object-cover opacity-60 md:opacity-50"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-slate-950/80 via-slate-950/40 to-slate-950/90"></div>
+        </div>
 
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          className="max-w-3xl space-y-6 flex flex-col items-center"
-        >
-
-
-          {/* Core Title */}
-          <motion.h1
-            variants={itemVariants}
-            className="text-4xl sm:text-5xl md:text-6xl font-black text-slate-800 dark:text-white leading-tight"
-          >
-            The Smartest Phonebook Ever <br />
-            <span className="animated-gradient-text">Engineered.</span>
-          </motion.h1>
-
-          {/* Description */}
-          <motion.p
-            variants={itemVariants}
-            className="text-sm sm:text-base md:text-lg text-slate-500 dark:text-slate-400 font-medium max-w-2xl leading-relaxed"
-          >
-            Optimize your directory searches with high-speed in-memory Tries, full-text indexing, and spelling correction engines. Back up, filter, and import in seconds.
-          </motion.p>
-
-          {/* CTA Buttons */}
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-6 py-16 text-center flex flex-col items-center">
           <motion.div
-            variants={itemVariants}
-            className="flex flex-wrap justify-center gap-4 pt-4"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            className="max-w-3xl space-y-8 glass-panel p-8 md:p-12 rounded-[2.5rem] bg-white/5 dark:bg-slate-900/10 border border-white/10 backdrop-blur-xl shadow-2xl"
           >
-            <Link
-              to="/register"
-              className="flex items-center gap-2 px-6 py-3 rounded-2xl text-white bg-cyan-500 hover:bg-cyan-600 transition-all font-bold text-sm md:text-base shadow-lg shadow-cyan-500/20 active:scale-95 cursor-pointer"
+            {/* Core Title */}
+            <motion.h1
+              variants={itemVariants}
+              className="text-4xl sm:text-5xl md:text-7xl font-black text-white leading-[1.1]"
             >
-              Get Started Free
-              <ArrowRight className="w-4 h-4" />
-            </Link>
+              The Smartest <br />
+              <span className="text-cyan-400">Phonebook</span> Ever
+            </motion.h1>
+
+            {/* Description */}
+            <motion.p
+              variants={itemVariants}
+              className="text-sm sm:text-base md:text-xl text-slate-200 font-medium max-w-2xl leading-relaxed opacity-90"
+            >
+              Optimize your directory searches with high-speed in-memory Tries, full-text indexing, and spelling correction engines. Back up, filter, and import in seconds.
+            </motion.p>
+
+            {/* CTA Buttons */}
+            <motion.div
+              variants={itemVariants}
+              className="flex flex-wrap justify-center gap-4 pt-4"
+            >
+              <Link
+                to="/register"
+                className="flex items-center gap-2 px-8 py-4 rounded-2xl text-white bg-cyan-500 hover:bg-cyan-600 transition-all font-bold text-base md:text-lg shadow-xl shadow-cyan-500/30 active:scale-95 cursor-pointer ring-2 ring-white/20"
+              >
+                Get Started Free
+                <ArrowRight className="w-5 h-5" />
+              </Link>
+            </motion.div>
           </motion.div>
-        </motion.div>
+        </div>
       </section>
 
       {/* 3. Core Tech Showcase Features Grid */}

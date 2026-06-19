@@ -161,6 +161,7 @@ export const ContactsProvider = ({ children }) => {
       if (res.data.success) {
         toast.success(res.data.message || 'Contact updated successfully!');
         fetchContacts(pagination.currentPage);
+        if (searchQuery) executeSmartSearch(searchQuery); 
         fetchFiltersMetadata();
         return { success: true };
       }

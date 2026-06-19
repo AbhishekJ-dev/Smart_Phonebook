@@ -13,8 +13,12 @@ CREATE TABLE IF NOT EXISTS users (
   name VARCHAR(100) NOT NULL,
   email VARCHAR(255) UNIQUE NOT NULL,
   password VARCHAR(255) NOT NULL,
+  profile_picture VARCHAR(500),
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Ensure user table has profile_picture if it already exists
+ALTER TABLE users ADD COLUMN IF NOT EXISTS profile_picture VARCHAR(500);
 
 -- Create Contacts table
 CREATE TABLE IF NOT EXISTS contacts (

@@ -60,9 +60,16 @@ export const Profile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (newPassword && newPassword !== confirmPassword) {
-      toast.error('New passwords do not match.');
-      return;
+    if (newPassword) {
+      if (newPassword.length < 8) return toast.error('New password must be at least 8 characters long.');
+      const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+      if (!strongPasswordRegex.test(newPassword)) {
+        return toast.error('New password must contain uppercase, lowercase, a number, and a special character.');
+      }
+      if (newPassword !== confirmPassword) {
+        toast.error('New passwords do not match.');
+        return;
+      }
     }
 
     setLoading(true);

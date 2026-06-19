@@ -46,18 +46,12 @@ export const Landing = () => {
             animate="visible"
             className="text-left space-y-8"
           >
-            <motion.div variants={itemVariants}>
-              <span className="inline-block px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-bold uppercase tracking-widest mb-4">
-                Powered by High-Speed Tries
-              </span>
-            </motion.div>
-
             <motion.h1
               variants={itemVariants}
               className="text-5xl sm:text-6xl md:text-7xl font-black text-white leading-[1.05]"
             >
               The Smartest <br />
-              <span className="text-cyan-400">Phonebook</span> Ever
+              Phonebook Ever
             </motion.h1>
 
             <motion.p
@@ -66,36 +60,6 @@ export const Landing = () => {
             >
               Optimize your directory searches with high-speed in-memory indexing and spelling correction. Manage your contacts with a platform designed for scale and speed.
             </motion.p>
-
-            {/* CTA Buttons */}
-            <motion.div
-              variants={itemVariants}
-              className="flex flex-wrap gap-4 pt-4"
-            >
-              <Link
-                to="/register"
-                className="flex items-center gap-2 px-8 py-4 rounded-2xl text-white bg-cyan-500 hover:bg-cyan-600 transition-all font-bold text-base md:text-lg shadow-xl shadow-cyan-500/30 active:scale-95 cursor-pointer ring-2 ring-white/10"
-              >
-                Get Started Free
-                <ArrowRight className="w-5 h-5" />
-              </Link>
-              <Link
-                to="/login"
-                className="flex items-center gap-2 px-8 py-4 rounded-2xl text-slate-300 bg-slate-900/50 hover:bg-slate-800 border border-slate-800 transition-all font-bold text-base md:text-lg cursor-pointer"
-              >
-                Sign In
-              </Link>
-            </motion.div>
-
-            {/* Social Proof / Stats Link */}
-            <motion.div variants={itemVariants} className="pt-4 flex items-center gap-4 text-slate-500">
-               <div className="flex -space-x-2">
-                 {[1,2,3,4].map(i => (
-                    <div key={i} className="w-8 h-8 rounded-full border-2 border-slate-950 bg-slate-800 flex items-center justify-center text-[10px] font-bold">U{i}</div>
-                 ))}
-               </div>
-               <span className="text-xs font-semibold">Join 10k+ organized professionals</span>
-            </motion.div>
           </motion.div>
 
           {/* Right: Dedicated Image Showcase Area */}

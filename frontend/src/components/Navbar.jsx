@@ -49,7 +49,18 @@ export const Navbar = ({ onMenuClick }) => {
       </div>
 
       {/* Control Widgets & Session profiles */}
-      <div className="flex items-center gap-2 sm:gap-4">
+        {/* Desktop Nav Links */}
+        <div className="hidden md:flex items-center gap-1">
+          <Link
+            to="/"
+            className="px-4 py-2 text-sm font-bold text-slate-600 dark:text-slate-300 hover:text-cyan-500 transition-colors"
+          >
+            Home
+          </Link>
+          <div className="h-4 w-px bg-slate-200 dark:bg-slate-800 mx-2"></div>
+        </div>
+
+        <div className="flex items-center gap-2 md:gap-4">
         {/* Dynamic theme toggle */}
         <ThemeToggle />
 

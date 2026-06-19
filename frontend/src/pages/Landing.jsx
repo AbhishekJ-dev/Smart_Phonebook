@@ -31,56 +31,100 @@ export const Landing = () => {
   return (
     <div className="min-h-[calc(100vh-62px)] flex flex-col items-center select-none bg-slate-50 dark:bg-slate-950 transition-colors">
 
-      {/* 1. Hero Showcase Section */}
-      <section className="relative w-full min-h-[85vh] flex items-center justify-center overflow-hidden">
-        {/* Main Hero Background Image */}
-        <div className="absolute inset-0 z-0">
-          <img 
-            src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop" 
-            alt="Digital Connection" 
-            className="w-full h-full object-cover opacity-60 md:opacity-50"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-slate-950/80 via-slate-950/40 to-slate-950/90"></div>
-        </div>
+      {/* 1. Split Hero Section */}
+      <section className="relative w-full min-h-[90vh] flex items-center overflow-hidden bg-slate-950">
+        
+        {/* Color-matched background accent glow */}
+        <div className="absolute top-1/4 -left-20 w-[400px] h-[400px] bg-cyan-600/10 rounded-full blur-[120px] pointer-events-none"></div>
 
-        <div className="relative z-10 w-full max-w-7xl mx-auto px-6 py-16 text-center flex flex-col items-center">
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center py-20">
+          
+          {/* Left: Content Area */}
           <motion.div
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="max-w-3xl space-y-8 glass-panel p-8 md:p-12 rounded-[2.5rem] bg-white/5 dark:bg-slate-900/10 border border-white/10 backdrop-blur-xl shadow-2xl"
+            className="text-left space-y-8"
           >
-            {/* Core Title */}
+            <motion.div variants={itemVariants}>
+              <span className="inline-block px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-bold uppercase tracking-widest mb-4">
+                Powered by High-Speed Tries
+              </span>
+            </motion.div>
+
             <motion.h1
               variants={itemVariants}
-              className="text-4xl sm:text-5xl md:text-7xl font-black text-white leading-[1.1]"
+              className="text-5xl sm:text-6xl md:text-7xl font-black text-white leading-[1.05]"
             >
               The Smartest <br />
               <span className="text-cyan-400">Phonebook</span> Ever
             </motion.h1>
 
-            {/* Description */}
             <motion.p
               variants={itemVariants}
-              className="text-sm sm:text-base md:text-xl text-slate-200 font-medium max-w-2xl leading-relaxed opacity-90"
+              className="text-base md:text-lg text-slate-400 font-medium max-w-xl leading-relaxed"
             >
-              Optimize your directory searches with high-speed in-memory Tries, full-text indexing, and spelling correction engines. Back up, filter, and import in seconds.
+              Optimize your directory searches with high-speed in-memory indexing and spelling correction. Manage your contacts with a platform designed for scale and speed.
             </motion.p>
 
             {/* CTA Buttons */}
             <motion.div
               variants={itemVariants}
-              className="flex flex-wrap justify-center gap-4 pt-4"
+              className="flex flex-wrap gap-4 pt-4"
             >
               <Link
                 to="/register"
-                className="flex items-center gap-2 px-8 py-4 rounded-2xl text-white bg-cyan-500 hover:bg-cyan-600 transition-all font-bold text-base md:text-lg shadow-xl shadow-cyan-500/30 active:scale-95 cursor-pointer ring-2 ring-white/20"
+                className="flex items-center gap-2 px-8 py-4 rounded-2xl text-white bg-cyan-500 hover:bg-cyan-600 transition-all font-bold text-base md:text-lg shadow-xl shadow-cyan-500/30 active:scale-95 cursor-pointer ring-2 ring-white/10"
               >
                 Get Started Free
                 <ArrowRight className="w-5 h-5" />
               </Link>
+              <Link
+                to="/login"
+                className="flex items-center gap-2 px-8 py-4 rounded-2xl text-slate-300 bg-slate-900/50 hover:bg-slate-800 border border-slate-800 transition-all font-bold text-base md:text-lg cursor-pointer"
+              >
+                Sign In
+              </Link>
+            </motion.div>
+
+            {/* Social Proof / Stats Link */}
+            <motion.div variants={itemVariants} className="pt-4 flex items-center gap-4 text-slate-500">
+               <div className="flex -space-x-2">
+                 {[1,2,3,4].map(i => (
+                    <div key={i} className="w-8 h-8 rounded-full border-2 border-slate-950 bg-slate-800 flex items-center justify-center text-[10px] font-bold">U{i}</div>
+                 ))}
+               </div>
+               <span className="text-xs font-semibold">Join 10k+ organized professionals</span>
             </motion.div>
           </motion.div>
+
+          {/* Right: Dedicated Image Showcase Area */}
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="hidden lg:flex relative group"
+          >
+            {/* Visual Frame for the image */}
+            <div className="relative w-full aspect-[4/3] rounded-[3rem] overflow-hidden border border-white/5 shadow-2xl shadow-cyan-500/10">
+              <img 
+                src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop" 
+                alt="Digital Connection Showcase" 
+                className="w-full h-full object-cover transform transition-transform duration-1000 group-hover:scale-105"
+              />
+              {/* Subtle glass overlay on bottom corner */}
+              <div className="absolute inset-x-0 bottom-0 py-10 px-8 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent">
+                  <div className="flex items-center gap-3">
+                    <div className="w-2 h-2 rounded-full bg-cyan-500 animate-ping"></div>
+                    <span className="text-white text-sm font-bold opacity-80 uppercase tracking-widest italic">Seamless Connectivity</span>
+                  </div>
+              </div>
+            </div>
+            
+            {/* Background decorative glow behind image */}
+            <div className="absolute -inset-4 bg-cyan-500/10 rounded-[3.5rem] blur-2xl -z-10 group-hover:bg-cyan-500/20 transition-all duration-700"></div>
+          </motion.div>
+
         </div>
       </section>
 

@@ -7,9 +7,6 @@ const Footer = () => {
         © {new Date().getFullYear()} Smart Phonebook Search Engine. <br />
         <span className="opacity-80">Developed By Abhishek J & Twinkle Taleda.</span>
       </p>
-      <p className="text-[10px] font-bold text-slate-300 dark:text-slate-700 mt-2 uppercase tracking-widest">
-        v1.0.0 • Built with Node.js, PostgreSQL & React
-      </p>
     </footer>
   );
 };

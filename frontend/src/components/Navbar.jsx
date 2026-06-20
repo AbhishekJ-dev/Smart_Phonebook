@@ -51,8 +51,8 @@ export const Navbar = ({ onMenuClick }) => {
               alt="SmartPhonebook Logo" 
               className="w-10 h-10 md:w-12 md:h-12 object-contain rounded-xl shadow-lg shadow-cyan-500/10 group-hover:scale-105 transition-transform" 
             />
-            <span className="text-xl md:text-3xl font-black tracking-tight text-slate-800 dark:text-white flex items-center transition-colors">
-              Smart<span className="hidden sm:inline">Phonebook</span>
+            <span className="text-lg sm:text-2xl md:text-3xl font-black tracking-tighter sm:tracking-tight text-slate-800 dark:text-white flex items-center transition-colors">
+              SmartPhonebook
             </span>
           </Link>
         </div>

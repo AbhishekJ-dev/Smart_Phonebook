@@ -1,156 +1,158 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { LogOut, User, Settings, ShieldCheck, ChevronDown, Menu } from 'lucide-react';
+import { LogOut, User, Settings, ChevronDown, Menu } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
 import ThemeToggle from './ThemeToggle.jsx';
 
 export const Navbar = ({ onMenuClick }) => {
   const { user, logoutUser, isAuthenticated } = useAuth();
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
   // Close dropdown on click outside
   useEffect(() => {
     const handleOutsideClick = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-        setDropdownOpen(false);
+        setIsDropdownOpen(false);
       }
     };
     document.addEventListener('mousedown', handleOutsideClick);
     return () => document.removeEventListener('mousedown', handleOutsideClick);
   }, []);
 
-  return (
-    <header className="sticky top-0 z-40 w-full glass-panel border-b border-slate-200/50 dark:border-slate-800/40 bg-white/70 dark:bg-slate-950/70 backdrop-blur-md px-4 py-3 md:px-6 flex items-center justify-between shadow-sm">
-      
-      {/* Brand Logo or Sidebar drawer trigger */}
-      <div className="flex items-center gap-3">
-        {isAuthenticated && (
-          <button
-            onClick={onMenuClick}
-            className="p-2 rounded-xl text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-900 border border-slate-200/20 dark:border-slate-800/20 focus:outline-none lg:hidden cursor-pointer"
-            aria-label="Toggle Sidebar Navigation"
-          >
-            <Menu className="w-5 h-5" />
-          </button>
-        )}
-        
-        <Link to="/" className="flex items-center gap-2">
-          {/* Custom Logo Image */}
-          <img 
-            src="/logo.png" 
-            alt="SmartPhonebook Logo" 
-            className="w-8 h-8 object-contain rounded-lg shadow-sm" 
-          />
-          <span className="text-base md:text-lg font-black tracking-wide text-slate-800 dark:text-white flex items-center">
-            SmartPhonebook
-          </span>
-        </Link>
-      </div>
+  const getProfilePicUrl = (path) => {
+    return path.startsWith('http') ? path : `${import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5001'}/${path}`;
+  };
 
-      {/* Control Widgets & Session profiles */}
-        {/* Desktop Nav Links */}
-        <div className="hidden md:flex items-center gap-1">
-          <Link
-            to="/"
-            className="px-4 py-2 text-sm font-bold text-slate-600 dark:text-slate-300 hover:text-cyan-500 transition-colors"
-          >
-            Home
+  return (
+    <header className="sticky top-0 z-40 w-full glass-panel border-b border-slate-200/50 dark:border-slate-800/40 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md transition-all select-none">
+      <div className="max-w-[1500px] mx-auto px-4 sm:px-6 h-[76px] flex items-center justify-between gap-4">
+        
+        {/* Left Side: Enhanced Branding */}
+        <div className="flex items-center gap-3">
+          {isAuthenticated && (
+            <button
+              onClick={onMenuClick}
+              className="lg:hidden p-2 rounded-xl text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors mr-1"
+              aria-label="Open sidebar"
+            >
+              <Menu className="w-6 h-6" />
+            </button>
+          )}
+
+          <Link to="/" className="flex items-center gap-3 group">
+            {/* Custom Logo Image (Larger) */}
+            <img 
+              src="/logo.png" 
+              alt="SmartPhonebook Logo" 
+              className="w-12 h-12 object-contain rounded-xl shadow-lg shadow-cyan-500/10 group-hover:scale-105 transition-transform" 
+            />
+            <span className="text-2xl md:text-3xl font-black tracking-tight text-slate-800 dark:text-white flex items-center transition-colors">
+              SmartPhonebook
+            </span>
           </Link>
-          <div className="h-4 w-px bg-slate-200 dark:bg-slate-800 mx-2"></div>
         </div>
 
-        <div className="flex items-center gap-2 md:gap-4">
-        {/* Dynamic theme toggle */}
-        <ThemeToggle />
+        {/* Right Side: Navigation & Actions */}
+        <div className="flex items-center gap-4 sm:gap-8 flex-1 justify-end">
+          
+          {/* Main Nav Links (Visible when not logged in) */}
+          {!isAuthenticated && (
+            <div className="hidden md:flex items-center gap-8 mr-2">
+              <Link
+                to="/"
+                className="text-sm font-bold text-slate-600 dark:text-slate-300 hover:text-cyan-500 transition-all uppercase tracking-wider"
+              >
+                Home
+              </Link>
+              <Link
+                to="/login"
+                className="text-sm font-bold text-slate-600 dark:text-slate-300 hover:text-cyan-500 transition-all uppercase tracking-wider"
+              >
+                Sign In
+              </Link>
+              <Link
+                to="/register"
+                className="px-6 py-2.5 rounded-xl text-sm font-bold text-white bg-cyan-500 hover:bg-cyan-600 shadow-xl shadow-cyan-500/20 transition-all active:scale-95 uppercase tracking-wider"
+              >
+                Get Started
+              </Link>
+            </div>
+          )}
 
-        {isAuthenticated && user ? (
-          <div ref={dropdownRef} className="relative">
-            {/* Clickable Profile Badge */}
-            <button
-              onClick={() => setDropdownOpen(!dropdownOpen)}
-              className="flex items-center gap-2 px-2 py-1.5 rounded-xl border border-slate-200/50 dark:border-slate-800/40 hover:bg-slate-50 dark:hover:bg-slate-900/60 transition-colors focus:outline-none cursor-pointer"
-            >
-              {/* Profile Image or Initials representation */}
-              {user.profile_picture ? (
-                <img 
-                  src={user.profile_picture.startsWith('http') ? user.profile_picture : `${import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5001'}/${user.profile_picture}`} 
-                  alt={user.name} 
-                  className="w-7.5 h-7.5 rounded-lg object-cover shadow-sm border border-slate-200/50"
-                />
-              ) : (
-                <div className="w-7.5 h-7.5 rounded-lg bg-gradient-to-tr from-cyan-400 to-blue-500 text-white font-bold text-xs flex items-center justify-center shadow-sm">
-                  {user.name.charAt(0).toUpperCase()}
-                </div>
-              )}
-              <span className="hidden md:block text-xs font-bold text-slate-700 dark:text-slate-200">
-                {user.name.split(' ')[0]}
-              </span>
-              <ChevronDown className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500 transition-transform duration-200" style={{ transform: dropdownOpen ? 'rotate(180deg)' : 'none' }} />
-            </button>
+          {/* Dynamic theme toggle (Always at the end) */}
+          <div className="flex items-center gap-3 sm:gap-5 ml-2 border-l border-slate-200 dark:border-slate-800 pl-4 sm:pl-6">
+            <ThemeToggle />
 
-            {/* Profile Dropdown Items */}
-            {dropdownOpen && (
-              <div className="absolute right-0 mt-2 w-48 rounded-xl glass-panel border border-slate-200 dark:border-slate-800/50 bg-white/95 dark:bg-slate-950/90 shadow-2xl p-1.5 z-50 backdrop-blur-md animate-fade-in">
-                <div className="px-3 py-2 border-b border-slate-100 dark:border-slate-900/40 text-left">
-                  <span className="block text-xs font-bold text-slate-800 dark:text-white truncate">
-                    {user.name}
-                  </span>
-                  <span className="block text-[10px] text-slate-400 dark:text-slate-500 truncate">
-                    {user.email}
-                  </span>
-                </div>
-                
-                <div className="mt-1 space-y-0.5 text-left">
-                  <Link
-                    to="/profile"
-                    onClick={() => setDropdownOpen(false)}
-                    className="flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-slate-600 dark:text-slate-300 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors"
-                  >
-                    <User className="w-4 h-4 text-slate-400" />
-                    My Profile
-                  </Link>
-                  <Link
-                    to="/settings"
-                    onClick={() => setDropdownOpen(false)}
-                    className="flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-slate-600 dark:text-slate-300 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors"
-                  >
-                    <Settings className="w-4 h-4 text-slate-400" />
-                    System Settings
-                  </Link>
-                </div>
-
+            {/* User Session profile (only if authenticated) */}
+            {isAuthenticated && user && (
+              <div ref={dropdownRef} className="relative">
+                {/* Clickable Profile Badge */}
                 <button
-                  onClick={() => {
-                    setDropdownOpen(false);
-                    logoutUser();
-                  }}
-                  className="w-full flex items-center gap-2.5 px-3 py-2 mt-1 text-xs font-bold text-red-500 rounded-lg hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors cursor-pointer border-t border-slate-100 dark:border-slate-900/40 text-left"
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                  className="flex items-center gap-2.5 p-1.5 pr-4 rounded-2xl bg-slate-100 dark:bg-slate-900/60 border border-slate-200/50 dark:border-slate-800/40 hover:border-cyan-500/40 transition-all cursor-pointer group shadow-sm"
                 >
-                  <LogOut className="w-4 h-4 text-red-400" />
-                  Sign Out
+                  <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-cyan-500 to-indigo-500 flex items-center justify-center text-white text-sm font-bold shadow-md shadow-cyan-500/10 overflow-hidden">
+                    {user.profile_picture ? (
+                      <img 
+                        src={getProfilePicUrl(user.profile_picture)} 
+                        alt={user.name} 
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          e.target.style.display = 'none';
+                        }}
+                      />
+                    ) : (
+                      user.name.charAt(0).toUpperCase()
+                    )}
+                  </div>
+                  <div className="hidden sm:block text-left">
+                    <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-tighter leading-none mb-0.5">Account</p>
+                    <p className="text-sm font-black text-slate-700 dark:text-white truncate max-w-[100px]">{user.name.split(' ')[0]}</p>
+                  </div>
+                  <ChevronDown className={`w-4 h-4 text-slate-400 group-hover:text-cyan-500 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
                 </button>
+
+                {/* Dropdown Menu */}
+                {isDropdownOpen && (
+                  <div className="absolute right-0 mt-3 w-56 rounded-2xl glass-panel border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 shadow-2xl p-2 z-50 animate-in fade-in zoom-in duration-200">
+                    <div className="px-4 py-3 border-b border-slate-100 dark:border-slate-900/50">
+                      <p className="text-xs font-bold text-slate-800 dark:text-white truncate">{user.name}</p>
+                      <p className="text-[10px] text-slate-400 dark:text-slate-500 truncate mt-0.5">{user.email}</p>
+                    </div>
+                    
+                    <div className="mt-2 space-y-1">
+                      <Link
+                        to="/profile"
+                        onClick={() => setIsDropdownOpen(false)}
+                        className="flex items-center gap-3 px-3 py-2 text-xs font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-900 rounded-xl transition-all"
+                      >
+                        <User className="w-4 h-4" />
+                        My Profile
+                      </Link>
+                      <Link
+                        to="/settings"
+                        onClick={() => setIsDropdownOpen(false)}
+                        className="flex items-center gap-3 px-3 py-2 text-xs font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-900 rounded-xl transition-all"
+                      >
+                        <Settings className="w-4 h-4" />
+                        Settings
+                      </Link>
+                      <button
+                        onClick={logoutUser}
+                        className="w-full flex items-center gap-3 px-3 py-2 text-xs font-bold text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-xl transition-all text-left"
+                      >
+                        <LogOut className="w-4 h-4" />
+                        Sign Out
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
             )}
           </div>
-        ) : (
-          <div className="flex gap-1 sm:gap-2">
-            <Link
-              to="/login"
-              className="px-2 sm:px-3.5 py-1.5 text-xs font-bold rounded-xl text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-900 transition-all focus:outline-none"
-            >
-              Sign In
-            </Link>
-            <Link
-              to="/register"
-              className="px-2.5 sm:px-3.5 py-1.5 text-xs font-bold rounded-xl text-white bg-cyan-500 hover:bg-cyan-600 transition-all shadow-md shadow-cyan-500/10 focus:outline-none"
-            >
-              Get Started
-            </Link>
-          </div>
-        )}
+        </div>
       </div>
-
     </header>
   );
 };

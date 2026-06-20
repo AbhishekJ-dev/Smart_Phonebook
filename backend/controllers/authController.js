@@ -160,3 +160,75 @@ export const getMe = async (req, res, next) => {
     next(err);
   }
 };
+
+/**
+ * Update user profile details including profile picture
+ */
+export const updateProfile = async (req, res, next) => {
+  const { name, currentPassword, newPassword } = req.body;
+  const userId = req.user.id;
+  
+  try {
+    // 1. Fetch user to verify password if changing
+    const userResult = await pool.query('SELECT * FROM users WHERE id = $1', [userId]);
+    if (userResult.rows.length === 0) {
+      return res.status(404).json({ success: false, message: 'User not found.' });
+    }
+    const user = userResult.rows[0];
+
+    let updateFields = [];
+    let queryParams = [];
+    let paramCounter = 1;
+
+    // 2. Handle Profile Picture (if uploaded or requested to remove)
+    if (req.file) {
+      updateFields.push(`profile_picture = $${paramCounter}`);
+      queryParams.push(req.file.path); // Cloudinary URL
+      paramCounter++;
+    } else if (req.body.removeAvatar === 'true' || req.body.removeAvatar === true) {
+      updateFields.push(`profile_picture = NULL`);
+    }
+
+    // 3. Handle Name
+    if (name && name !== user.name) {
+      updateFields.push(`name = $${paramCounter}`);
+      queryParams.push(name);
+      paramCounter++;
+    }
+
+    // 4. Handle Password Change (if provided)
+    if (newPassword && currentPassword) {
+      const isMatch = await bcrypt.compare(currentPassword, user.password);
+      if (!isMatch) {
+         return res.status(401).json({ success: false, message: 'Existing password does not match.' });
+      }
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(newPassword, salt);
+      updateFields.push(`password = $${paramCounter}`);
+      queryParams.push(hashedPassword);
+      paramCounter++;
+    }
+
+    if (updateFields.length === 0) {
+      return res.status(400).json({ success: false, message: 'No changes provided.' });
+    }
+
+    // 5. Execute Update
+    const queryText = `UPDATE users SET ${updateFields.join(', ')} WHERE id = $${paramCounter} RETURNING id, name, email, profile_picture`;
+    queryParams.push(userId);
+
+    const updatedResult = await pool.query(queryText, queryParams);
+    const updatedUser = updatedResult.rows[0];
+
+    logger.success(`User profile updated for ${updatedUser.email}`);
+
+    res.status(200).json({
+      success: true,
+      message: 'Profile updated successfully.',
+      user: updatedUser
+    });
+
+  } catch (err) {
+    next(err);
+  }
+};

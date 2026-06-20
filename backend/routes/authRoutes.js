@@ -1,8 +1,9 @@
 import { Router } from 'express';
-import { register, login, getMe } from '../controllers/authController.js';
+import { register, login, getMe, updateProfile } from '../controllers/authController.js';
 import { registerValidator, loginValidator } from '../validators/authValidators.js';
 import { validateFields } from '../middleware/validatorMiddleware.js';
 import { protect } from '../middleware/authMiddleware.js';
+import { uploadAvatar } from '../middleware/uploadMiddleware.js';
 
 const router = Router();
 
@@ -20,5 +21,10 @@ router.post('/login', loginValidator, validateFields, login);
 // @desc    Retrieve active session
 // @access  Private
 router.get('/me', protect, getMe);
+
+// @route   PUT /api/auth/profile
+// @desc    Update profile details & image
+// @access  Private
+router.put('/profile', protect, uploadAvatar.single('avatar'), updateProfile);
 
 export default router;

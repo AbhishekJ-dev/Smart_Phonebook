@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import {
   User, Mail, Lock, ShieldCheck, Save, Eye, EyeOff,
-  BookOpen, Star, Tag, Building2, Search, Pencil
+  BookOpen, Star, Tag, Building2, Search, Pencil, Camera, Trash2
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.jsx';
 import api from '../services/api.js';
@@ -21,7 +21,7 @@ const StatCard = ({ icon: Icon, label, value, color }) => (
 );
 
 export const Profile = () => {
-  const { user, loginUser, logoutUser } = useAuth();
+  const { user } = useAuth();
 
   const [name, setName] = useState(user?.name || '');
   const [email, setEmail] = useState(user?.email || '');
@@ -34,6 +34,16 @@ export const Profile = () => {
   const [stats, setStats] = useState(null);
   const [statsLoading, setStatsLoading] = useState(true);
 
+  // New state for profile picture upload
+  const [avatarFile, setAvatarFile] = useState(null);
+  const [avatarPreview, setAvatarPreview] = useState(null);
+  const [shouldRemoveAvatar, setShouldRemoveAvatar] = useState(false);
+
+  const getProfilePicUrl = (path) => {
+    if (!path) return null;
+    return path.startsWith('http') ? path : `${import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5001'}/${path}`;
+  };
+
   // Sync form if user context updates
   useEffect(() => {
     if (user) {
@@ -41,6 +51,24 @@ export const Profile = () => {
       setEmail(user.email || '');
     }
   }, [user]);
+
+  // Handle image selection
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setAvatarFile(file);
+      setAvatarPreview(URL.createObjectURL(file));
+      setShouldRemoveAvatar(false);
+    }
+  };
+
+  // Handle image removal
+  const handleRemoveAvatar = () => {
+    setAvatarFile(null);
+    setAvatarPreview(null);
+    setShouldRemoveAvatar(true);
+    toast.success('Selected image removed. Save changes to finalize.');
+  };
 
   // Fetch user stats
   useEffect(() => {
@@ -74,21 +102,40 @@ export const Profile = () => {
 
     setLoading(true);
     try {
-      const payload = { name, email };
-      if (newPassword) {
-        payload.newPassword = newPassword;
-        payload.currentPassword = currentPassword;
+      const formData = new FormData();
+      formData.append('name', name);
+      if (avatarFile) {
+        formData.append('avatar', avatarFile);
+      } else if (shouldRemoveAvatar) {
+        formData.append('removeAvatar', 'true');
       }
 
-      const res = await api.put('/profile', payload);
+      if (newPassword) {
+        formData.append('newPassword', newPassword);
+        formData.append('currentPassword', currentPassword);
+      }
+
+      const res = await api.put('/auth/profile', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      
       if (res.data.success) {
         toast.success('Profile updated successfully!');
-        // Update localStorage to reflect new name/email
+        // Update localStorage to reflect new name/email/photo
         const stored = JSON.parse(localStorage.getItem('user') || '{}');
         localStorage.setItem('user', JSON.stringify({ ...stored, ...res.data.user }));
+        
+        // Reset sensitive fields
         setCurrentPassword('');
         setNewPassword('');
         setConfirmPassword('');
+        setAvatarFile(null);
+        setShouldRemoveAvatar(false);
+        
+        // Reload page to refresh all context views simply
+        window.location.reload();
       }
     } catch (err) {
       const msg = err.response?.data?.message || 'Failed to update profile.';
@@ -101,6 +148,8 @@ export const Profile = () => {
   const avatarInitials = name
     ? name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2)
     : '?';
+
+  const userAvatarUrl = shouldRemoveAvatar ? null : (avatarPreview || getProfilePicUrl(user?.profile_picture));
 
   const statCards = stats
     ? [
@@ -123,11 +172,45 @@ export const Profile = () => {
         className="relative overflow-hidden rounded-3xl p-6 md:p-8 bg-gradient-to-br from-indigo-500/10 via-purple-500/5 to-cyan-500/10 dark:from-indigo-900/20 dark:via-purple-900/10 dark:to-cyan-900/10 border border-indigo-200/50 dark:border-indigo-800/20 shadow-sm"
       >
         <div className="absolute top-0 right-0 w-48 h-48 bg-indigo-400/10 rounded-full blur-[80px] pointer-events-none" />
-        <div className="relative flex flex-col sm:flex-row items-center sm:items-start gap-5">
-          {/* Avatar */}
-          <div className="w-20 h-20 rounded-2xl bg-gradient-to-tr from-cyan-400 to-indigo-500 text-white font-black text-2xl flex items-center justify-center shadow-lg shadow-indigo-500/20 flex-shrink-0">
-            {avatarInitials}
+        <div className="relative flex flex-col sm:flex-row items-center sm:items-start gap-6">
+          
+          {/* Avatar Upload Container */}
+          <div className="relative group">
+            <div className={`w-24 h-24 rounded-3xl bg-gradient-to-tr from-cyan-400 to-indigo-500 text-white font-black text-2xl flex items-center justify-center shadow-lg shadow-indigo-500/20 flex-shrink-0 overflow-hidden border-4 border-white dark:border-slate-900 transition-all duration-300 ${shouldRemoveAvatar ? 'scale-90 opacity-80' : ''}`}>
+              {userAvatarUrl ? (
+                <img src={userAvatarUrl} alt={name} className="w-full h-full object-cover" />
+              ) : (
+                avatarInitials
+              )}
+            </div>
+            
+            {/* Action Buttons Overlay */}
+            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity rounded-3xl bg-slate-900/60 backdrop-blur-sm gap-3">
+              {/* Change/Upload Button */}
+              <label className="p-2 rounded-xl bg-white/20 hover:bg-white/40 text-white cursor-pointer transition-colors" title="Change Photo">
+                <Camera className="w-5 h-5" />
+                <input 
+                  type="file" 
+                  className="hidden" 
+                  accept="image/*" 
+                  onChange={handleImageChange} 
+                />
+              </label>
+              
+              {/* Delete Button (Only if user has a photo) */}
+              {(userAvatarUrl || user?.profile_picture) && !shouldRemoveAvatar && (
+                <button
+                  type="button"
+                  onClick={handleRemoveAvatar}
+                  className="p-2 rounded-xl bg-red-500/80 hover:bg-red-600 text-white transition-colors cursor-pointer"
+                  title="Remove Photo"
+                >
+                  <Trash2 className="w-5 h-5" />
+                </button>
+              )}
+            </div>
           </div>
+
           <div className="text-center sm:text-left">
             <h1 className="text-2xl font-black text-slate-800 dark:text-white tracking-tight">
               {user?.name || 'Your Profile'}

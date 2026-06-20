@@ -32,13 +32,13 @@ export const Landing = () => {
     <div className="min-h-[calc(100vh-62px)] flex flex-col items-center select-none bg-slate-50 dark:bg-slate-950 transition-colors">
 
       {/* 1. Split Hero Section */}
-      <section className="relative w-full min-h-[90vh] flex items-center overflow-hidden bg-slate-950">
-        
+      <section className="relative w-full min-h-[90vh] flex items-center overflow-hidden bg-white dark:bg-slate-950 transition-colors duration-500">
+
         {/* Color-matched background accent glow */}
-        <div className="absolute top-1/4 -left-20 w-[400px] h-[400px] bg-cyan-600/10 rounded-full blur-[120px] pointer-events-none"></div>
+        <div className="absolute top-1/4 -left-20 w-[400px] h-[400px] bg-cyan-600/10 dark:bg-cyan-600/10 rounded-full blur-[120px] pointer-events-none"></div>
 
         <div className="relative z-10 w-full max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center py-20">
-          
+
           {/* Left: Content Area */}
           <motion.div
             variants={containerVariants}
@@ -48,15 +48,15 @@ export const Landing = () => {
           >
             <motion.h1
               variants={itemVariants}
-              className="text-5xl sm:text-6xl md:text-7xl font-black text-white leading-[1.05]"
+              className="text-5xl sm:text-6xl md:text-7xl font-black text-slate-900 dark:text-white leading-[1.05]"
             >
               The Smartest <br />
-              Phonebook Ever
+              <span className="text-slate-900 dark:text-white">Phonebook Ever</span>
             </motion.h1>
 
             <motion.p
               variants={itemVariants}
-              className="text-base md:text-lg text-slate-400 font-medium max-w-xl leading-relaxed"
+              className="text-base md:text-lg text-slate-600 dark:text-slate-400 font-medium max-w-xl leading-relaxed"
             >
               Optimize your directory searches with high-speed in-memory indexing and spelling correction. Manage your contacts with a platform designed for scale and speed.
             </motion.p>
@@ -71,20 +71,13 @@ export const Landing = () => {
           >
             {/* Visual Frame for the image */}
             <div className="relative w-full aspect-[4/3] rounded-[3rem] overflow-hidden border border-white/5 shadow-2xl shadow-cyan-500/10">
-              <img 
-                src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop" 
-                alt="Digital Connection Showcase" 
+              <img
+                src="/img for show.jpg"
+                alt="Digital Connection Showcase"
                 className="w-full h-full object-cover transform transition-transform duration-1000 group-hover:scale-105"
               />
-              {/* Subtle glass overlay on bottom corner */}
-              <div className="absolute inset-x-0 bottom-0 py-10 px-8 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent">
-                  <div className="flex items-center gap-3">
-                    <div className="w-2 h-2 rounded-full bg-cyan-500 animate-ping"></div>
-                    <span className="text-white text-sm font-bold opacity-80 uppercase tracking-widest italic">Seamless Connectivity</span>
-                  </div>
-              </div>
             </div>
-            
+
             {/* Background decorative glow behind image */}
             <div className="absolute -inset-4 bg-cyan-500/10 rounded-[3.5rem] blur-2xl -z-10 group-hover:bg-cyan-500/20 transition-all duration-700"></div>
           </motion.div>
@@ -181,7 +174,7 @@ export const Landing = () => {
 
       {/* Footer copyright */}
       <footer className="w-full border-t border-slate-100 dark:border-slate-950/40 py-8 text-center text-xs text-slate-400 font-medium bg-white/20 dark:bg-slate-950/20">
-        © {new Date().getFullYear()} Smart Phonebook Search Engine. <br />Developed By MCA Students( Twinkle Taleda & Abhishek J ) At Chetan Bussiness School, Hubli.
+        © {new Date().getFullYear()} Smart Phonebook Search Engine. <br />Developed By Abhishek J & Twinkle Taleda.
       </footer>
     </div>
   );

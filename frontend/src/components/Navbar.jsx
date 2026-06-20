@@ -30,25 +30,29 @@ export const Navbar = ({ onMenuClick }) => {
         
         {/* Left Side: Enhanced Branding */}
         <div className="flex items-center gap-3">
-          {isAuthenticated && (
-            <button
-              onClick={onMenuClick}
-              className="lg:hidden p-2 rounded-xl text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors mr-1"
-              aria-label="Open sidebar"
-            >
-              <Menu className="w-6 h-6" />
-            </button>
-          )}
+          <button
+            onClick={() => {
+              if (isAuthenticated) {
+                onMenuClick();
+              } else {
+                setIsDropdownOpen(!isDropdownOpen);
+              }
+            }}
+            className="lg:hidden p-2 rounded-xl text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors mr-1"
+            aria-label="Toggle menu"
+          >
+            <Menu className="w-6 h-6" />
+          </button>
 
           <Link to="/" className="flex items-center gap-3 group">
             {/* Custom Logo Image (Larger) */}
             <img 
               src="/logo.png" 
               alt="SmartPhonebook Logo" 
-              className="w-12 h-12 object-contain rounded-xl shadow-lg shadow-cyan-500/10 group-hover:scale-105 transition-transform" 
+              className="w-10 h-10 md:w-12 md:h-12 object-contain rounded-xl shadow-lg shadow-cyan-500/10 group-hover:scale-105 transition-transform" 
             />
-            <span className="text-2xl md:text-3xl font-black tracking-tight text-slate-800 dark:text-white flex items-center transition-colors">
-              SmartPhonebook
+            <span className="text-xl md:text-3xl font-black tracking-tight text-slate-800 dark:text-white flex items-center transition-colors">
+              Smart<span className="hidden sm:inline">Phonebook</span>
             </span>
           </Link>
         </div>
@@ -58,26 +62,57 @@ export const Navbar = ({ onMenuClick }) => {
           
           {/* Main Nav Links (Visible when not logged in) */}
           {!isAuthenticated && (
-            <div className="hidden md:flex items-center gap-8 mr-2">
-              <Link
-                to="/"
-                className="text-sm font-bold text-slate-600 dark:text-slate-300 hover:text-cyan-500 transition-all uppercase tracking-wider"
-              >
-                Home
-              </Link>
-              <Link
-                to="/login"
-                className="text-sm font-bold text-slate-600 dark:text-slate-300 hover:text-cyan-500 transition-all uppercase tracking-wider"
-              >
-                Sign In
-              </Link>
-              <Link
-                to="/register"
-                className="px-6 py-2.5 rounded-xl text-sm font-bold text-white bg-cyan-500 hover:bg-cyan-600 shadow-xl shadow-cyan-500/20 transition-all active:scale-95 uppercase tracking-wider"
-              >
-                Get Started
-              </Link>
-            </div>
+            <>
+              <div className="hidden md:flex items-center gap-8 mr-2">
+                <Link
+                  to="/"
+                  className="text-sm font-bold text-slate-600 dark:text-slate-300 hover:text-cyan-500 transition-all uppercase tracking-wider"
+                >
+                  Home
+                </Link>
+                <Link
+                  to="/login"
+                  className="text-sm font-bold text-slate-600 dark:text-slate-300 hover:text-cyan-500 transition-all uppercase tracking-wider"
+                >
+                  Sign In
+                </Link>
+                <Link
+                  to="/register"
+                  className="px-6 py-2.5 rounded-xl text-sm font-bold text-white bg-cyan-500 hover:bg-cyan-600 shadow-xl shadow-cyan-500/20 transition-all active:scale-95 uppercase tracking-wider"
+                >
+                  Get Started
+                </Link>
+              </div>
+
+              {/* Mobile Guest Dropdown */}
+              {isDropdownOpen && (
+                <div className="md:hidden absolute top-[80px] left-4 right-4 rounded-2xl glass-panel border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 shadow-2xl p-4 z-50 animate-in fade-in slide-in-from-top-4 duration-200">
+                  <div className="flex flex-col gap-3">
+                    <Link
+                      to="/"
+                      onClick={() => setIsDropdownOpen(false)}
+                      className="px-4 py-3 text-sm font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-900 rounded-xl transition-all"
+                    >
+                      Home
+                    </Link>
+                    <Link
+                      to="/login"
+                      onClick={() => setIsDropdownOpen(false)}
+                      className="px-4 py-3 text-sm font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-900 rounded-xl transition-all"
+                    >
+                      Sign In
+                    </Link>
+                    <Link
+                      to="/register"
+                      onClick={() => setIsDropdownOpen(false)}
+                      className="px-4 py-3 text-sm font-bold text-white bg-cyan-500 rounded-xl text-center shadow-lg shadow-cyan-500/20"
+                    >
+                      Get Started
+                    </Link>
+                  </div>
+                </div>
+              )}
+            </>
           )}
 
           {/* Dynamic theme toggle (Always at the end) */}

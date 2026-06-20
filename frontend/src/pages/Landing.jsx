@@ -60,19 +60,38 @@ export const Landing = () => {
             >
               Optimize your directory searches with high-speed in-memory indexing and spelling correction. Manage your contacts with a platform designed for scale and speed.
             </motion.p>
+
+            <motion.div 
+              variants={itemVariants}
+              className="flex flex-wrap items-center gap-4 pt-4"
+            >
+              <Link
+                to="/register"
+                className="px-8 py-4 rounded-2xl bg-cyan-500 hover:bg-cyan-600 text-white font-bold shadow-xl shadow-cyan-500/25 transition-all active:scale-95 flex items-center gap-2 group"
+              >
+                Get Started Free
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </Link>
+              <Link
+                to="/login"
+                className="px-8 py-4 rounded-2xl bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-white font-bold hover:bg-slate-200 dark:hover:bg-slate-800 transition-all active:scale-95"
+              >
+                Sign In
+              </Link>
+            </motion.div>
           </motion.div>
 
           {/* Right: Dedicated Image Showcase Area */}
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="hidden lg:flex relative group"
+            className="flex relative group w-full max-w-lg mx-auto lg:max-w-none"
           >
             {/* Visual Frame for the image */}
-            <div className="relative w-full aspect-[4/3] rounded-[3rem] overflow-hidden border border-white/5 shadow-2xl shadow-cyan-500/10">
+            <div className="relative w-full aspect-[4/3] rounded-[2rem] md:rounded-[3rem] overflow-hidden border border-white/5 shadow-2xl shadow-cyan-500/10">
               <img
-                src="/img for show.jpg"
+                src="/hero-show.jpg"
                 alt="Digital Connection Showcase"
                 className="w-full h-full object-cover transform transition-transform duration-1000 group-hover:scale-105"
               />

@@ -190,11 +190,6 @@ export const Landing = () => {
           </div>
         </div>
       </section>
-
-      {/* Footer copyright */}
-      <footer className="w-full border-t border-slate-100 dark:border-slate-950/40 py-8 text-center text-xs text-slate-400 font-medium bg-white/20 dark:bg-slate-950/20">
-        © {new Date().getFullYear()} Smart Phonebook Search Engine. <br />Developed By Abhishek J & Twinkle Taleda.
-      </footer>
     </div>
   );
 };

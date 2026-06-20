@@ -10,6 +10,7 @@ import { ContactsProvider } from './context/ContactsContext.jsx';
 // Layout Components
 import Navbar from './components/Navbar.jsx';
 import Sidebar from './components/Sidebar.jsx';
+import Footer from './components/Footer.jsx';
 import { Loader } from './components/Loader.jsx';
 
 // Pages
@@ -64,8 +65,11 @@ const AppShell = ({ children }) => {
         {isAuthenticated && (
           <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
         )}
-        <main className={`flex-1 overflow-y-auto ${isAuthenticated ? 'lg:ml-64' : ''}`}>
-          {children}
+        <main className={`flex flex-col flex-1 overflow-y-auto ${isAuthenticated ? 'lg:ml-64' : ''}`}>
+          <div className="flex-1">
+            {children}
+          </div>
+          <Footer />
         </main>
       </div>
     </div>

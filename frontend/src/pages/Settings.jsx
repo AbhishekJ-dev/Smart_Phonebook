@@ -199,18 +199,6 @@ export const Settings = () => {
 
       </div>
 
-      {/* About section */}
-      <motion.div
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3 }}
-        className="p-4 rounded-2xl bg-slate-100/50 dark:bg-slate-900/30 border border-slate-200/40 dark:border-slate-800/30 text-center"
-      >
-        <p className="text-[10px] font-semibold text-slate-400 dark:text-slate-600">
-          Smart Phonebook &nbsp;•&nbsp; v1.0.0 &nbsp;•&nbsp; Built with Node.js, PostgreSQL &amp; React
-        </p>
-      </motion.div>
-
       {/* Dialogs */}
       <ConfirmationDialog
         isOpen={clearHistoryOpen}

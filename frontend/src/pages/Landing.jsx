@@ -69,14 +69,8 @@ export const Landing = () => {
                 to="/register"
                 className="px-8 py-4 rounded-2xl bg-cyan-500 hover:bg-cyan-600 text-white font-bold shadow-xl shadow-cyan-500/25 transition-all active:scale-95 flex items-center gap-2 group"
               >
-                Get Started Free
+                Get Started
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </Link>
-              <Link
-                to="/login"
-                className="px-8 py-4 rounded-2xl bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-white font-bold hover:bg-slate-200 dark:hover:bg-slate-800 transition-all active:scale-95"
-              >
-                Sign In
               </Link>
             </motion.div>
           </motion.div>
